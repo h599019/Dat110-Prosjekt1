@@ -23,10 +23,9 @@ public class MessageConnection {
 
 			outStream = new DataOutputStream(socket.getOutputStream());
 
-			inStream = new DataInputStream (socket.getInputStream());
+			inStream = new DataInputStream(socket.getInputStream());
 
 		} catch (IOException ex) {
-
 			System.out.println("Connection: " + ex.getMessage());
 			ex.printStackTrace();
 		}
@@ -39,9 +38,14 @@ public class MessageConnection {
 		// TODO - START
 		// encapsulate the data contained in the Message and write to the output stream
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-			
+		data = MessageUtils.encapsulate(message);
+
+        try {
+            outStream.write(data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 		// TODO - END
 
 	}
@@ -53,11 +57,13 @@ public class MessageConnection {
 		
 		// TODO - START
 		// read a segment from the input stream and decapsulate data into a Message
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+        try {
+            data = inStream.readNBytes(128);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        message = MessageUtils.decapsulate(data);
+        // TODO - END
 		
 		return message;
 		

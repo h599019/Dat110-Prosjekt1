@@ -35,10 +35,13 @@ public class MessageUtils {
 		
 		// TODO - START
 		// decapsulate segment and put received payload data into a message
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
+		byte[] mByte = new byte[segment[0]];
+
+		for(int i = 0; i < segment[0]; i++) {
+			mByte[i] = segment[i + 1];
+		}
+		message = new Message(mByte);
+
 		// TODO - END
 		
 		return message;

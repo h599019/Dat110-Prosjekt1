@@ -49,9 +49,24 @@ public class RPCServer {
 		   // - invoke the method and pass the param
 		   // - encapsulate return value 
 		   // - send back the message containing the RPC reply
-			
-		   if (true)
-				throw new UnsupportedOperationException(TODO.method());
+
+			System.out.println("Linje 53");
+			requestmsg = connection.receive();
+
+			System.out.println("Linje 56");
+			rpcid = requestmsg.getData()[0];
+			byte[] decapsulated = RPCUtils.decapsulate(requestmsg.getData());
+
+			System.out.println("Linje 60");
+			RPCRemoteImpl method = services.get(rpcid);
+			byte[] result = method.invoke(decapsulated);
+
+			System.out.println("Linje 64");
+			replymsg = new Message(RPCUtils.encapsulate(rpcid, result));
+			connection.send(replymsg);
+
+
+
 		   
 		   // TODO - END
 

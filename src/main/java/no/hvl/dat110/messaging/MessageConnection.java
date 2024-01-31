@@ -57,12 +57,16 @@ public class MessageConnection {
 		
 		// TODO - START
 		// read a segment from the input stream and decapsulate data into a Message
+
+		int length = 128;
         try {
-            data = inStream.readNBytes(128);
+            data = inStream.readNBytes(length);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         message = MessageUtils.decapsulate(data);
+
         // TODO - END
 		
 		return message;

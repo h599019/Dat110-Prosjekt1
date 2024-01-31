@@ -30,12 +30,14 @@ public class MessagingServer {
 
 		// TODO - START
 		// accept TCP connection on welcome socket and create messaging connection to be returned
-		try {
-			connection = new MessageConnection(welcomeSocket.accept());
-		} catch (IOException p) {
-			p.printStackTrace();
-		}
-		// TODO - END
+
+        try {
+            connection = new MessageConnection(welcomeSocket.accept());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // TODO - END
 		
 		return connection;
 

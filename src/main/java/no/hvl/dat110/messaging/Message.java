@@ -13,13 +13,10 @@ public class Message {
 	public Message(byte[] data) {
 		
 		// TODO - START
-		if(data == null) {
-			throw new NullPointerException();
-		} else if(data.length > 127) {
-			throw new IllegalArgumentException();
-		} else {
-			this.data = data;
-		}
+		if(data == null) throw new NullPointerException();
+		if(data.length > 127) throw new BufferOverflowException();
+
+		this.data = data;
 		// TODO - END
 	}
 

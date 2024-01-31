@@ -20,14 +20,12 @@ public class MessageUtils {
 
 		// encapulate/encode the payload data of the message and form a segment
 		// according to the segment format for the messaging layer
+
 		segment = new byte[SEGMENTSIZE];
 		data = message.getData();
 
 		segment[0] = (byte) data.length;
-
-		for (int i = 1; i < data.length; i++) {
-			segment[i + 1] = data[i];
-		}
+		System.arraycopy(data, 0, segment, 1, data.length);
 
 		// TODO - END
 		return segment;
@@ -39,12 +37,10 @@ public class MessageUtils {
 		
 		// TODO - START
 		// decapsulate segment and put received payload data into a message
-		byte[] mByte = new byte[segment[0]];
 
-		for(int i = 0; i < segment[0]; i++) {
-			mByte[i] = segment[i + 1];
-		}
-		message = new Message(mByte);
+		int length = segment[0]+1;
+		byte[] data = Arrays.copyOfRange(segment, 1, length);
+		message = new Message(data);
 
 		// TODO - END
 		return message;

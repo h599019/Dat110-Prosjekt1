@@ -23,8 +23,8 @@ public class RPCClient {
 		// TODO - START
 		// connect using the RPC client
 
-		msgclient.connect();
-		
+		connection = msgclient.connect();
+
 		// TODO - END
 	}
 	

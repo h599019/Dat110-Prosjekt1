@@ -15,9 +15,9 @@ public class RPCUtils {
 		
 		// Encapsulate the rpcid and payload in a byte array according to the RPC message syntax / format
 
-		rpcmsg = new byte[payload.length+1];
-
+		rpcmsg = new byte[payload.length + 1];
 		rpcmsg[0] = rpcid;
+
 		System.arraycopy(payload, 0, rpcmsg, 1, payload.length);
 		
 		// TODO - END
@@ -33,7 +33,8 @@ public class RPCUtils {
 		
 		// Decapsulate the rpcid and payload in a byte array according to the RPC message syntax
 
-		payload = Arrays.copyOfRange(rpcmsg, 1, rpcmsg.length);
+		payload = new byte[rpcmsg.length - 1];
+		System.arraycopy(rpcmsg, 1, payload, 0, payload.length);
 
 		// TODO - END
 		
@@ -61,11 +62,9 @@ public class RPCUtils {
 		String decoded = null; 
 		
 		// TODO - START
-		StringBuilder sb = new StringBuilder();
-		for (byte b : data) {
-			sb.append((char) b);
-		}
-		decoded = sb.toString();
+
+		decoded = new String(data);
+
 		// TODO - END
 		
 		return decoded;
@@ -77,9 +76,8 @@ public class RPCUtils {
 		
 		// TODO - START 
 
-		encoded = new byte[1];
-		encoded[0] = 69;
-				
+		encoded = new byte[69];
+
 		// TODO - END
 		
 		return encoded;
@@ -87,13 +85,10 @@ public class RPCUtils {
 	}
 	
 	public static void unmarshallVoid(byte[] data) {
-		
-		// TODO
-		
-		if (data[0] != 69) {
-			//AKA funny number
-			throw new IllegalArgumentException("Naughty naughty, u know the position ;)");
-		}
+
+		// TODO - START
+
+		// TODO - END
 		
 	}
 
@@ -125,11 +120,7 @@ public class RPCUtils {
 		
 		// TODO - START 
 
-		encoded = new byte[4];
-		ByteBuffer xxx = ByteBuffer.wrap(encoded);
-		xxx.putInt(x);
-
-		encoded = xxx.array();
+		encoded = ByteBuffer.allocate(Integer.BYTES).putInt(x).array();
 
 		// TODO - END
 		
@@ -143,8 +134,8 @@ public class RPCUtils {
 		
 		// TODO - START
 
-		ByteBuffer xxx = ByteBuffer.wrap(data);
-		decoded = xxx.getInt();
+		ByteBuffer b = ByteBuffer.wrap(data);
+		decoded = b.getInt();
 		
 		// TODO - END
 		

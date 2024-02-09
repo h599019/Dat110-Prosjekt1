@@ -38,9 +38,7 @@ public class MessagingServer {
         }
 
         // TODO - END
-		
 		return connection;
-
 	}
 
 	public void stop() {

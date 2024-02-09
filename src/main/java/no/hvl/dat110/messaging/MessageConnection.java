@@ -37,17 +37,15 @@ public class MessageConnection {
 		
 		// TODO - START
 		// encapsulate the data contained in the Message and write to the output stream
-		
-		data = MessageUtils.encapsulate(message);
 
-        try {
-            outStream.write(data);
-        } catch (IOException e) {
+		try {
+			data = MessageUtils.encapsulate(message);
+			outStream.write(data);
+		} catch (IOException e) {
             throw new RuntimeException(e);
         }
 
 		// TODO - END
-
 	}
 
 	public Message receive() {
@@ -58,19 +56,15 @@ public class MessageConnection {
 		// TODO - START
 		// read a segment from the input stream and decapsulate data into a Message
 
-		int length = 128;
         try {
-            data = inStream.readNBytes(length);
+            data = inStream.readNBytes(MessageUtils.SEGMENTSIZE);
+			message = MessageUtils.decapsulate(data);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        message = MessageUtils.decapsulate(data);
-
         // TODO - END
-		
 		return message;
-		
 	}
 
 	// close the connection by closing streams and the underlying socket	

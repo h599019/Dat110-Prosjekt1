@@ -32,7 +32,8 @@ public class MessagingClient {
 		// create and return a corresponding messaging connection
 
         try {
-            clientSocket = new Socket(server, port);
+			clientSocket = new Socket(server, port);
+			connection = new MessageConnection(clientSocket);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

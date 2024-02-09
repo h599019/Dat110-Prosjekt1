@@ -31,26 +31,28 @@ public class Controller  {
 		// connect to sensor and display RPC servers - using the RPCClients
 		// read value from sensor using RPC and write to display using RPC
 
-		display = new DisplayStub(displayclient);
-		sensor = new SensorStub(sensorclient);
+		try {
+			display = new DisplayStub(displayclient);
+			sensor = new SensorStub(sensorclient);
 
-		displayclient.connect();
-		sensorclient.connect();
+			displayclient.connect();
+			sensorclient.connect();
 
-		for (int i = 0; i < N ; i++) {
+			for(int i = 0; i < N; i++) {
+				int value = sensor.read();
+				display.write(" " + value);
+				Thread.sleep(1000);
+			}
+			// TODO - END
 
-			int temp = sensor.read();
-			display.write(Integer.toString(temp));
+			stopdisplay.stop();
+			stopsensor.stop();
+
+			displayclient.disconnect();
+			sensorclient.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		// TODO - END
-		
-		stopdisplay.stop();
-		stopsensor.stop();
-	
-		displayclient.disconnect();
-		sensorclient.disconnect();
-		
 		System.out.println("Controller stopping ...");
-		
 	}
 }

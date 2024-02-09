@@ -50,16 +50,22 @@ public class RPCServer {
 		   // - encapsulate return value 
 		   // - send back the message containing the RPC reply
 
-			requestmsg = connection.receive();
+		   requestmsg = connection.receive();
+		   byte[] request = requestmsg.getData();
+		   rpcid = request[0];
+		   RPCRemoteImpl method = services.get(rpcid);
+		   byte[] RPCreply;
 
-			rpcid = requestmsg.getData()[0];
-			byte[] decapsulated = RPCUtils.decapsulate(requestmsg.getData());
+		   if(method == null) {
+			   RPCreply = new byte[0];
+		   } else {
+			   request = RPCUtils.decapsulate(request);
+			   byte[] returnval = method.invoke(request);
+			   RPCreply = RPCUtils.encapsulate(rpcid, returnval);
+		   }
 
-			RPCRemoteImpl method = services.get(rpcid);
-			byte[] result = method.invoke(decapsulated);
-
-			replymsg = new Message(RPCUtils.encapsulate(rpcid, result));
-			connection.send(replymsg);
+		   replymsg = new Message(RPCreply);
+		   connection.send(replymsg);
 		   // TODO - END
 
 			// stop the server if it was stop methods that was called
@@ -67,7 +73,6 @@ public class RPCServer {
 			   stop = true;
 		   }
 		}
-	
 	}
 	
 	// used by server side method implementations to register themselves in the RPC server

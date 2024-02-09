@@ -32,8 +32,9 @@ public class RPCClient {
 		
 		// TODO - START
 		// disconnect by closing the underlying messaging connection
-		
-		connection.close();
+		if (connection != null) {
+			connection.close();
+		}
 		
 		// TODO - END
 	}
@@ -58,18 +59,19 @@ public class RPCClient {
 		The return value from the RPC call must be decapsulated according to the RPC message format
 
 		*/
+		try {
+			returnval  = RPCUtils.encapsulate(rpcid, param);
+			Message resp;
 
-		returnval  = RPCUtils.encapsulate(rpcid, param);
-		Message resp;
+			connection.send(new Message(returnval));
+			resp = connection.receive();
 
-		connection.send(new Message(returnval));
-		resp = connection.receive();
-
-		returnval = RPCUtils.decapsulate(resp.getData());
+			returnval = RPCUtils.decapsulate(resp.getData());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// TODO - END
 		return returnval;
-		
 	}
-
 }
